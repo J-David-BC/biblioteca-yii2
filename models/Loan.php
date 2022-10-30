@@ -22,7 +22,7 @@ use yii\db\query;
  * @property string $updated_at
  * @property int $users_id
  *
- * @property BookCopies[] $bookCopies
+ * @property BookCopie[] $bookCopies
  * @property LoansHasBookCopies[] $loansHasBookCopies
  * @property User $users
  */
@@ -92,7 +92,7 @@ class Loan extends \yii\db\ActiveRecord {
      * @return \yii\db\ActiveQuery
      */
     public function getBookCopies() {
-        return $this->hasMany(BookCopie::class, ['id' => 'book_copies_id'])->viaTable('loans_has_book_copies', ['loans_id' => 'id']);
+        return $this->hasMany(BookCopie::class, ['id' => 'book_copies_id'])->viaTable('loans_has_book_copies', ['loans_id' => 'id'])->leftJoin('loans_has_book_copies', 'book_copies.id=book_copies_id ')->select('book_copies.*,loan_status');
     }
 
     /**
@@ -104,6 +104,7 @@ class Loan extends \yii\db\ActiveRecord {
         return $this->hasMany(LoansHasBookCopies::class, ['loans_id' => 'id']);
     }
 
+
     /**
      * Gets query for [[Users]].
      *
@@ -114,7 +115,6 @@ class Loan extends \yii\db\ActiveRecord {
     }
 
     public function getTitulos(){
-        $ejemplares = $this->getBookCopies();
         foreach($this->bookCopies as $ejemplar){
             $titulos[]=$ejemplar->books->title;
         }

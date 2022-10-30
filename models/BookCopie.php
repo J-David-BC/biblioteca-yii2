@@ -4,19 +4,19 @@ namespace app\models;
 
 use Yii;
 use yii\helpers\ArrayHelper;
+use yii\db\query;
 /**
  * This is the model class for table "book_copies".
  *
  * @property int $id
  * @property string $status
  * @property int $books_id
- *
  * @property Book $books
  * @property Loans[] $loans
  * @property LoansHasBookCopies[] $loansHasBookCopies
  */
-class BookCopie extends \yii\db\ActiveRecord
-{
+class BookCopie extends \yii\db\ActiveRecord{
+    public $loan_status;
     /**
      * {@inheritdoc}
      */
@@ -90,7 +90,18 @@ class BookCopie extends \yii\db\ActiveRecord
             return $this->getPrestamo()->return_date;
         return "No aplica";
     }
-    
+
+    public function actualizar($id){
+        $query = new Query();
+        $query->createCommand()->update("loans_has_book_copies",["loan_status"=>$this->loan_status],'book_copies_id='.$this->id.' AND loans_id='.$id)->execute();
+        //$query->update('loans_has_book_copies',['loan_status'=>$this->loan_status],' book_copies_id='.$this->id.' AND loans_id='.$id);
+    }
+
+    public function extraerLoanStatus($loan_id){
+        $query = new Query();
+        $loan_status = $query->select(["loan_status"])->from("loans_has_book_copies")->where(["loans_id"=>$loan_id,"book_copies_id"=>$this->id])->one();
+    }
+
     /**
      * Gets query for [[LoansHasBookCopies]].
      *

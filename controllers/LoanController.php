@@ -23,9 +23,11 @@ class LoanController extends Controller {
                     if(!empty($idl)){
                         $bookCopie = $model->getIdBookCopie($idl);
                         $bookCopie->status = "Prestado";
+                        //$bookCopie->loan_status = "Prestado";
                         if($bookCopie!=null){
                             $model->link('bookCopies',$bookCopie);
                         }
+                        $bookCopie->extraerLoanStatus($model->id);
                         $bookCopie->save();
                     }
                 }
@@ -65,8 +67,27 @@ class LoanController extends Controller {
             if($model->validate()&&$model->save()){
                 $i=0;
                 foreach($model->bookCopies as $ejemplar){
-                    if(!empty($model->ejemplarStatus[$i]))
+                    if(!empty($model->ejemplarStatus[$i])){
                         $ejemplar->status=$model->ejemplarStatus[$i];
+                        switch ($ejemplar->status) {
+                            case 'Retrasado':
+                                $ejemplar->loan_status="No devuelto";
+                                break;
+                            case 'Perdido':
+                                $ejemplar->loan_status="No devuelto";
+                                break;
+                            case 'Disponible':
+                                $ejemplar->loan_status="Devuelto a tiempo";
+                                break;
+                            case 'Prestado':
+                                $ejemplar->loan_status="Prestado";
+                                break;
+                            default:
+                                $ejemplar->loan_status="Prestado";
+                                break;
+                        }
+                        $ejemplar->actualizar($id);
+                    }
                     $i++;
                     $ejemplar->save();
                 }

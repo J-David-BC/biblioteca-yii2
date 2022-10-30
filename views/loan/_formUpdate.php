@@ -10,7 +10,7 @@ $estados = [ 'Disponible' => 'Disponible', 'No disponible' => 'No disponible','R
 ?>
 <div class="loan-_form"> 
     
-    <?php $form = ActiveForm::begin(); $model->co = 3;?>
+    <?php $form = ActiveForm::begin();?>
         <?= $form->field($model, 'status')->dropDownList([ 'En curso' => 'En curso', 'Finalizado' => 'Finalizado', 'Retraso' => 'Retraso', ], ['prompt' => 'Selecciona un estado'])  ?>
         <?= $form->field($model, 'status1')->dropDownList($estados, ['prompt' => 'Selecciona un estado'])->label('Libro: '.$model->libros[0]) ?>
         <?= $form->field($model, 'status2')->dropDownList($estados, ['prompt' => 'Selecciona un estado'])->label('Libro: '.$model->libros[1]) ?>

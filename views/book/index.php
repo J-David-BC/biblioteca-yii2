@@ -36,6 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'editorial',
             'year',
             [
+                'label' => 'Imagen',
                 'format' => 'html',
                 'value'  => function ($data){ return Html::img($data->image,['width'=>'60px']); },
             ],

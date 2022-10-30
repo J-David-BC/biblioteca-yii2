@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            //'id',
+            'id',
             [
                 'label'=>'Usuario',
                 'value'=>$model->users->name,
@@ -41,7 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
-    <--<table class="table table-striped table-bordered detail-view">
+    <table class="table table-striped table-bordered detail-view">
         <tr>
             <th>Ejemplar #</th>
             <th>Título</th>
@@ -49,14 +49,15 @@ $this->params['breadcrumbs'][] = $this->title;
         </tr>
         <?php
             foreach($model->bookCopies as $ejemplar){
+                $ejemplar->extraerLoanStatus($model->id)
         ?>
         <tr>
             <td width="100"><?= $ejemplar->id?></td>
             <td width="200"><?= $ejemplar->books->title ?></td>
-            <td width="100"><?= $ejemplar->status ?></td>
+            <td width="100"><?= $ejemplar->loan_status ?></td>
         </tr>
         <?php
             }
         ?>
-    </table>-->
+    </table>
 </div>
