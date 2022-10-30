@@ -17,7 +17,7 @@ class LoanController extends Controller {
             $model->loan_date = date("Y-m-d",strtotime($model->loan_date));
             $model->return_date = date("Y-m-d",strtotime('+'.$model->days.' day',strtotime($model->loan_date)));
             $libros = array_unique(array($model->libro1,$model->libro2,$model->libro3));
-            print_r($libros);
+            //print_r($libros);
             if($model->validate()&&$model->save()){
                 foreach ($libros as $idl) {
                     if(!empty($idl)){

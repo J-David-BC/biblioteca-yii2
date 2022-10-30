@@ -92,7 +92,7 @@ class Loan extends \yii\db\ActiveRecord {
      * @return \yii\db\ActiveQuery
      */
     public function getBookCopies() {
-        return $this->hasMany(BookCopie::class, ['id' => 'book_copies_id'])->viaTable('loans_has_book_copies', ['loans_id' => 'id'])->leftJoin('loans_has_book_copies', 'book_copies.id=book_copies_id ')->select('book_copies.*,loan_status');
+        return $this->hasMany(BookCopie::class, ['id' => 'book_copies_id'])->viaTable('loans_has_book_copies', ['loans_id' => 'id'])->leftJoin('loans_has_book_copies', 'book_copies.id=book_copies_id ')->where(["loans_id"=>$this->id])->select('book_copies.*,loan_status');
     }
 
     /**
